@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "878899459853",
+    "project_id": "nfc-tool-f2e18",
+    "storage_bucket": "nfc-tool-f2e18.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:878899459853:android:60699d1b9dc0e2a8346244",
+        "android_client_info": {
+          "package_name": "com.example.nfc_tool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj2ejlg7SFnyqsWb_-orR_jbOjBMtrqoI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
