@@ -1,0 +1,20 @@
+{
+    "loginScreen": {
+        "title": "تسجيل الدخول",
+        "emailInput": "بريد إلكتروني",
+        "passwordInput": "كلمة المرور",
+        "signInButton": "تسجيل الدخول",
+        "changeLanguageButton": "تغيير اللغة"
+    },
+    "homeScreen": {
+        "title": "NFC TOOL",
+        "writeButton": "يكتب",
+        "updateButton": "تحديث",
+        "clearButton": "واضح"
+    },
+    "writeScreen": {
+        "title": "يكتب",
+        "addButton": "إضافة سجل",
+        "optionsButton": "المزيد من الخيارات"
+    }
+}

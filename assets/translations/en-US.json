@@ -1,0 +1,20 @@
+{
+    "loginScreen": {
+        "title": "Sign In",
+        "emailInput": "Email",
+        "passwordInput": "Password",
+        "signInButton": "Sign In",
+        "changeLanguageButton": "Change Language"
+    },
+    "homeScreen": {
+        "title": "NFC TOOL",
+        "writeButton": "Write",
+        "updateButton": "Update",
+        "clearButton": "Clear"
+    },
+    "writeScreen": {
+        "title": "Write",
+        "addButton": "Add a record",
+        "optionsButton": "More options"
+    }
+}

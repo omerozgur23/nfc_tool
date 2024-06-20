@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/screens/home_screen.dart';
+import 'package:nfc_tool/screens/language_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,25 +17,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  // bool _isLoading = false;
+  bool obscureText = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("NFC TOOL"),
+        title: const Text("loginScreen.title").tr(),
         backgroundColor: HexColor(backgroundColor),
       ),
       body: buildLoginForm(),
     );
   }
-
-  // Widget buildLoadingIndicator() {
-  //   return const Center(
-  //     child: CircularProgressIndicator(),
-  //   );
-  // }
 
   Widget buildLoginForm() {
     return Padding(
@@ -43,40 +39,87 @@ class _LoginScreenState extends State<LoginScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              ),
-            ),
+            buildEmailInput(),
             const SizedBox(height: 16.0),
-            TextFormField(
-              controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0))),
-              ),
-              obscureText: true,
-            ),
+            buildPasswordInput(),
             const SizedBox(height: 16.0),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: HexColor(buttonColor),
-                  minimumSize: const Size.fromHeight(50)),
-              onPressed: signInWithEmailAndPassword,
-              child: Text(
-                  style: TextStyle(
-                      color: HexColor(languageButtonTextColor),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500),
-                  'Sign In'),
-            ),
+            buildSignInButton(),
+            const SizedBox(height: 16.0),
+            buildChangeLanguageButton()
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildEmailInput() {
+    return TextFormField(
+      controller: _emailController,
+      decoration: InputDecoration(
+        prefixIcon: const Icon(Icons.person),
+        labelText: "loginScreen.emailInput".tr(),
+        border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(15.0))),
+      ),
+    );
+  }
+
+  Widget buildPasswordInput() {
+    return TextFormField(
+      controller: _passwordController,
+      decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.lock),
+          labelText: "loginScreen.passwordInput".tr(),
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+          suffixIcon: IconButton(
+              onPressed: () {
+                setState(() {
+                  obscureText = !obscureText;
+                });
+              },
+              icon:
+                  Icon(obscureText ? Icons.visibility : Icons.visibility_off))),
+      obscureText: obscureText,
+    );
+  }
+
+  Widget buildSignInButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: HexColor(buttonColor),
+          minimumSize: const Size.fromHeight(50)),
+      onPressed: signInWithEmailAndPassword,
+      child: Text(
+          style: TextStyle(
+              color: HexColor(languageButtonTextColor),
+              fontSize: 20,
+              fontWeight: FontWeight.w500),
+          "loginScreen.signInButton".tr()),
+    );
+  }
+
+  Widget buildChangeLanguageButton() {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: HexColor(buttonColor),
+            minimumSize: const Size.fromHeight(50)),
+        onPressed: (() => navigateToLanguageScreen)(),
+        child: Text(
+            style: TextStyle(
+                color: HexColor(languageButtonTextColor),
+                fontSize: 20,
+                fontWeight: FontWeight.w500),
+            "loginScreen.changeLanguageButton".tr()));
+  }
+
+  void navigateToLanguageScreen() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const LanguageScreen(),
+      ),
+      (Route<dynamic> route) => false,
     );
   }
 
@@ -98,10 +141,6 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text('Failed to sign in. Please check your credentials.'),
         ),
       );
-    } finally {
-      // setState(() {
-      //   _isLoading = false;
-      // });
     }
   }
 }

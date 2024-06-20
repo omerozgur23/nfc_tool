@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
@@ -16,7 +17,7 @@ class _WriteScreenState extends State<WriteScreen> {
       appBar: AppBar(
         backgroundColor: HexColor(backgroundColor),
         centerTitle: true,
-        title: const Text("Write"),
+        title: Text("writeScreen.title".tr()),
       ),
       body: buildWriteScreen(),
     );
@@ -28,14 +29,14 @@ class _WriteScreenState extends State<WriteScreen> {
       child: Column(
         children: [
           buildButton(
-              buttonText: "Add a record",
+              buttonText: "writeScreen.addButton",
               buttonIcon: Icons.add,
               onPressed: () {}),
           const SizedBox(
             height: 5,
           ),
           buildButton(
-              buttonText: "More options",
+              buttonText: "writeScreen.optionsButton",
               buttonIcon: Icons.settings,
               onPressed: () {})
         ],
@@ -64,7 +65,7 @@ class _WriteScreenState extends State<WriteScreen> {
             Text(
                 style:
                     TextStyle(color: HexColor(buttonTextColor), fontSize: 16),
-                buttonText)
+                buttonText.tr())
           ],
         ));
   }

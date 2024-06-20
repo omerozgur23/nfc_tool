@@ -1,9 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
+import 'package:nfc_tool/screens/login_screen.dart';
 import 'package:nfc_tool/screens/write_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,12 +20,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: HexColor(backgroundColor),
-        title: const Text("NFC TOOL"),
+        title: Text("homeScreen.title".tr()),
         centerTitle: true,
-        // actions: [
-        //   IconButton(
-        //       onPressed: (() => signOut()), icon: const Icon(Icons.logout))
-        // ],
       ),
       body: buildBody(),
       floatingActionButton: FloatingActionButton(
@@ -44,15 +40,17 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             buildButton(
-                buttonText: "Write", onPressed: (() => navigateWritePage())),
+                buttonText: "homeScreen.writeButton",
+                onPressed: (() => navigateWritePage())),
             const SizedBox(
               height: 25.0,
             ),
-            buildButton(buttonText: "Update", onPressed: () {}),
+            buildButton(
+                buttonText: "homeScreen.updateButton", onPressed: () {}),
             const SizedBox(
               height: 25.0,
             ),
-            buildButton(buttonText: "Clear", onPressed: () {}),
+            buildButton(buttonText: "homeScreen.clearButton", onPressed: () {}),
           ],
         ),
       ),
@@ -68,12 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: onPressed,
         child: Text(
             style: TextStyle(fontSize: 25, color: HexColor(buttonTextColor)),
-            buttonText));
+            buttonText.tr()));
   }
 
   signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pop(context);
+    // Navigator.pop(context);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      (route) => false,
+    );
   }
 
   navigateWritePage() {
