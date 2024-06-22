@@ -44,6 +44,8 @@ app.*.map.json
 
 # Firebase options file
 firebase_options.dart
+firebase.json
+logcat_output.txt
 
 # Ignore entire Android and iOS directories
 /android/
