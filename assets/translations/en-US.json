@@ -4,7 +4,10 @@
         "emailInput": "Email",
         "passwordInput": "Password",
         "signInButton": "Sign In",
-        "changeLanguageButton": "Change Language"
+        "changeLanguageButton": "Change Language",
+        "forgotPasswordButton": "Forgot your password?",
+        "errorLoginMessage": "The email or password is incorrect. Please check your information.",
+        "errorDialogOkButton": "OK"
     },
     "homeScreen": {
         "title": "NFC TOOL",

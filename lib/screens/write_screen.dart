@@ -119,7 +119,7 @@ class _WriteScreenState extends State<WriteScreen> {
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              Image.asset('assets/nfc_reading.gif'),
+              Image.asset('assets/gif/nfc.gif'),
               const SizedBox(height: 20),
               const Text("Please tap your NFC card to the phone"),
             ],

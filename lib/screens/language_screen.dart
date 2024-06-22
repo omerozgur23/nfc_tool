@@ -12,23 +12,30 @@ class LanguageScreen extends StatelessWidget {
     const String englishBtnText = "English";
     const String arabicBtnText = "عربي";
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: HexColor(appBarColor),
+      ),
       backgroundColor: HexColor(backgroundColor),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            buildLanguageButton(
-                context: context,
-                buttonText: englishBtnText,
-                locale: const Locale("en", "US")),
-            const SizedBox(
-              height: 20,
-            ),
-            buildLanguageButton(
-                context: context,
-                buttonText: arabicBtnText,
-                locale: const Locale("ar", "AR"))
-          ],
+      body: Container(
+        margin: const EdgeInsets.fromLTRB(25, 130, 25, 130),
+        decoration: BoxDecoration(color: HexColor(frameColor)),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              buildLanguageButton(
+                  context: context,
+                  buttonText: arabicBtnText,
+                  locale: const Locale("ar", "AR")),
+              const SizedBox(
+                height: 20,
+              ),
+              buildLanguageButton(
+                  context: context,
+                  buttonText: englishBtnText,
+                  locale: const Locale("en", "US"))
+            ],
+          ),
         ),
       ),
     );
@@ -40,6 +47,8 @@ class LanguageScreen extends StatelessWidget {
       required BuildContext context}) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
+            shape: const ContinuousRectangleBorder(),
+            backgroundColor: HexColor(buttonColor),
             minimumSize: const Size(250, 50),
             textStyle: const TextStyle(
               fontSize: 20,
@@ -50,8 +59,7 @@ class LanguageScreen extends StatelessWidget {
           navigateToLoginScreen(context);
         },
         child: Text(
-            style: TextStyle(color: HexColor(languageButtonTextColor)),
-            buttonText));
+            style: TextStyle(color: HexColor(buttonTextColor)), buttonText));
   }
 
   void changeLocale(BuildContext context, Locale locale) {

@@ -18,11 +18,29 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: HexColor(backgroundColor),
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: HexColor(backgroundColor),
-        title: Text("homeScreen.title".tr()),
+        backgroundColor: HexColor(appBarColor),
+        title: Text(
+          "homeScreen.title".tr(),
+          style: TextStyle(color: HexColor(appBarTitleColor)),
+        ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.settings_suggest_outlined,
+              color: HexColor(appBarIconColor),
+            ),
+            iconSize: 30.0,
+          )
+          // Icon(
+          //   Icons.settings_suggest_outlined,
+          //   color: HexColor(appBarSettingsButton),
+          // )
+        ],
       ),
       body: buildBody(),
       floatingActionButton: FloatingActionButton(
@@ -34,11 +52,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildBody() {
     return Container(
-      margin: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      margin: const EdgeInsets.fromLTRB(25, 130, 25, 130),
+      decoration: BoxDecoration(color: HexColor(frameColor)),
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             buildButton(
                 buttonText: "homeScreen.writeButton",
@@ -62,7 +82,8 @@ class _HomeScreenState extends State<HomeScreen> {
       {required String buttonText, required VoidCallback onPressed}) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            minimumSize: const Size.fromHeight(100),
+            shape: const ContinuousRectangleBorder(),
+            minimumSize: const Size.fromHeight(90),
             backgroundColor: HexColor(buttonColor)),
         onPressed: onPressed,
         child: Text(
