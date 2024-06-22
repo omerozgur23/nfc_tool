@@ -43,7 +43,8 @@ app.*.map.json
 /android/app/release
 
 # Firebase options file
-firebase-options.dart
+firebase_options.dart
 
-# Gradle build file
-build.gradle
+# Ignore entire Android and iOS directories
+/android/
+/ios/
