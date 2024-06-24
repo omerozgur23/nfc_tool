@@ -6,6 +6,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/screens/login_screen.dart';
 import 'package:nfc_tool/screens/write_screen.dart';
+import 'package:nfc_tool/utils/custom_page_route.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -27,24 +28,10 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(color: HexColor(appBarTitleColor)),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.settings_suggest_outlined,
-              color: HexColor(appBarIconColor),
-            ),
-            iconSize: 30.0,
-          )
-          // Icon(
-          //   Icons.settings_suggest_outlined,
-          //   color: HexColor(appBarSettingsButton),
-          // )
-        ],
       ),
       body: buildBody(),
       floatingActionButton: FloatingActionButton(
-        onPressed: (() => signOut()),
+        onPressed: (() => signOut(context)),
         child: const Icon(Icons.logout_rounded),
       ),
     );
@@ -63,15 +50,15 @@ class _HomeScreenState extends State<HomeScreen> {
             buildButton(
                 buttonText: "homeScreen.writeButton",
                 onPressed: (() => readNfcAndNavigate())),
-            const SizedBox(
-              height: 25.0,
-            ),
-            buildButton(
-                buttonText: "homeScreen.updateButton", onPressed: () {}),
-            const SizedBox(
-              height: 25.0,
-            ),
-            buildButton(buttonText: "homeScreen.clearButton", onPressed: () {}),
+            // const SizedBox(
+            //   height: 25.0,
+            // ),
+            // buildButton(
+            //     buttonText: "homeScreen.updateButton", onPressed: () {}),
+            // const SizedBox(
+            //   height: 25.0,
+            // ),
+            // buildButton(buttonText: "homeScreen.clearButton", onPressed: () {}),
           ],
         ),
       ),
@@ -91,12 +78,11 @@ class _HomeScreenState extends State<HomeScreen> {
             buttonText.tr()));
   }
 
-  signOut() async {
+  signOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
-    // Navigator.pop(context);
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      CustomPageRoute(builder: (context) => const LoginScreen()),
       (route) => false,
     );
   }
@@ -116,76 +102,75 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   readNfcAndNavigate() async {
-    try {
-      var availability = await FlutterNfcKit.nfcAvailability;
-      if (availability == NFCAvailability.available) {
-        showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: const Text("Approach an NFC Card"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Image.asset("assets/gif/nfc.gif"),
-                  ],
-                ),
-              );
-            });
-
-        var tag = await FlutterNfcKit.poll();
-
-        Navigator.of(context).pop();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WriteScreen(tag: tag),
-            ));
-      } else {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Icon(
-                      Icons.error,
-                      color: Colors.red,
-                      size: 50,
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text("NFC disabled"),
-                  ],
-                ),
-              );
-            });
-      }
-    } catch (e) {
-      Navigator.of(context).pop();
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(
-                    Icons.error,
-                    color: Colors.red,
-                    size: 50,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text("NFC okuma başarısız oldu"),
-                ],
-              ),
-            );
-          });
-    }
+    Navigator.of(context).pushNamed("/write");
+//     try {
+//       var availability = await FlutterNfcKit.nfcAvailability;
+//       if (availability == NFCAvailability.available) {
+//         showDialog(
+//             context: context,
+//             barrierDismissible: false,
+//             builder: (BuildContext context) {
+//               return AlertDialog(
+//                 title: const Text("Approach an NFC Card"),
+//                 content: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: <Widget>[
+//                     Image.asset("assets/gif/nfc.gif"),
+//                   ],
+//                 ),
+//               );
+//             });
+// var tag = await FlutterNfcKit.poll();
+//         Navigator.of(context).pop();
+//         Navigator.push(
+//             context,
+//             MaterialPageRoute(
+//               builder: (context) => WriteScreen(tag: tag),
+//             ));
+//       } else {
+//         showDialog(
+//             context: context,
+//             builder: (BuildContext context) {
+//               return const AlertDialog(
+//                 content: Column(
+//                   mainAxisSize: MainAxisSize.min,
+//                   children: <Widget>[
+//                     Icon(
+//                       Icons.error,
+//                       color: Colors.red,
+//                       size: 50,
+//                     ),
+//                     SizedBox(
+//                       height: 20,
+//                     ),
+//                     Text("NFC disabled"),
+//                   ],
+//                 ),
+//               );
+//             });
+//       }
+//     } catch (e) {
+//       Navigator.of(context).pop();
+//       showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return const AlertDialog(
+//               content: Column(
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: <Widget>[
+//                   Icon(
+//                     Icons.error,
+//                     color: Colors.red,
+//                     size: 50,
+//                   ),
+//                   SizedBox(
+//                     height: 20,
+//                   ),
+//                   Text("NFC okuma başarısız oldu"),
+//                 ],
+//               ),
+//             );
+//           });
+//     }
   }
 }

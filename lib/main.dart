@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_tool/screens/home_screen.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:nfc_tool/screens/login_screen.dart';
+import 'package:nfc_tool/screens/write_screen.dart';
 import 'firebase_options.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:nfc_tool/utils/custom_page_route.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,12 +32,32 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      // title: 'Flutter Demo',
+      title: 'Express Tap',
       // theme: ThemeData(
       //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       //   useMaterial3: true,
       // ),
-      home: const LanguageScreen(),
+      onGenerateRoute: (settings) {
+        return CustomPageRoute(
+          builder: (context) => _getPageFromSettings(settings),
+          settings: settings,
+        );
+      },
+      // home: const LanguageScreen(),
     );
+  }
+
+  Widget _getPageFromSettings(RouteSettings settings) {
+    switch (settings.name) {
+      case '/login':
+        return const LoginScreen();
+      case '/home':
+        return const HomeScreen();
+      case '/write':
+        return const WriteScreen();
+      // Diğer sayfaları buraya ekleyin
+      default:
+        return const LanguageScreen();
+    }
   }
 }

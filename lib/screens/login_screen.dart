@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/screens/home_screen.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,42 +29,28 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  PreferredSize buildAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(kToolbarHeight),
-      child: Container(
-        decoration: BoxDecoration(
-          color: HexColor(appBarColor),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: const Offset(0, 3), // Yalnızca y ekseninde gölge
-            ),
-          ],
-        ),
-        child: AppBar(
-          centerTitle: true,
-          title: Text(
-            "loginScreen.title",
-            style: TextStyle(color: HexColor(appBarTitleColor)),
-          ).tr(),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          iconTheme: IconThemeData(color: HexColor(appBarIconColor)),
-        ),
-      ),
+  AppBar buildAppBar() {
+    return AppBar(
+      centerTitle: true,
+      title: Text(
+        "loginScreen.title",
+        style: TextStyle(color: HexColor(appBarTitleColor)),
+      ).tr(),
+      backgroundColor: HexColor(appBarColor),
+      iconTheme: IconThemeData(color: HexColor(appBarIconColor)),
     );
   }
 
   Widget buildLoginForm() {
+    double screenHeight = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
-        height: 550,
-        padding: const EdgeInsets.fromLTRB(25, 50, 25, 50),
-        margin: const EdgeInsets.fromLTRB(25, 130, 25, 130),
-        decoration: BoxDecoration(color: HexColor(frameColor)),
+        height: screenHeight * 0.8,
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
+        decoration: BoxDecoration(
+            color: HexColor(frameColor),
+            borderRadius: BorderRadius.circular(5.0)),
         child: Form(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,12 +74,16 @@ class _LoginScreenState extends State<LoginScreen> {
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
-        prefixIcon: const Icon(Icons.email),
-        labelText: "loginScreen.emailInput".tr(),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(0.0)),
-        ),
-      ),
+          prefixIcon: const Icon(Icons.email),
+          labelText: "loginScreen.emailInput".tr(),
+          labelStyle: const TextStyle(color: Colors.black),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1.5),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          )),
       keyboardType: TextInputType.emailAddress,
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s"))],
     );
@@ -106,8 +95,13 @@ class _LoginScreenState extends State<LoginScreen> {
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock),
           labelText: "loginScreen.passwordInput".tr(),
+          labelStyle: const TextStyle(color: Colors.black),
           border: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(0.0))),
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.black, width: 1.5),
+            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          ),
           suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
@@ -131,7 +125,9 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.only(left: 50, right: 50, top: 30),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: const ContinuousRectangleBorder(),
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
           backgroundColor: HexColor(buttonColor),
           minimumSize: const Size.fromHeight(50),
         ),
@@ -180,46 +176,47 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ));
+      Navigator.of(context).pushNamed("/home");
     } catch (e) {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const Icon(
-                    Icons.cancel_outlined,
-                    color: Colors.red,
-                    size: 50,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text("loginScreen.errorLoginMessage".tr()),
-                ],
-              ),
-              actionsAlignment: MainAxisAlignment.center,
-              actions: [
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: HexColor(buttonColor),
-                        shape: const ContinuousRectangleBorder()),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                        style: TextStyle(color: HexColor(buttonTextColor)),
-                        "loginScreen.errorDialogOkButton".tr()))
-              ],
-            );
-          });
+      errorDialog();
     }
+  }
+
+  Future<dynamic> errorDialog() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: HexColor(frameColor),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                // Icon(
+                //   Icons.cancel_outlined,
+                //   color: HexColor(buttonColor),
+                //   size: 50,
+                // ),
+                Image.asset("assets/gif/error.gif"),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text("loginScreen.errorLoginMessage".tr()),
+              ],
+            ),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: HexColor(buttonColor),
+                      shape: const ContinuousRectangleBorder()),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                      style: TextStyle(color: HexColor(buttonTextColor)),
+                      "loginScreen.errorDialogOkButton".tr()))
+            ],
+          );
+        });
   }
 }
