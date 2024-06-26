@@ -1,12 +1,11 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/screens/login_screen.dart';
-import 'package:nfc_tool/screens/write_screen.dart';
-import 'package:nfc_tool/utils/custom_page_route.dart';
+import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:nfc_tool/auth/auth_provider.dart' as custom_provider;
+import 'package:nfc_tool/custom_widgets/home_screen_widget.dart'
+    as custom_widget;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,161 +15,100 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final custom_provider.AuthProvider _authProvider =
+      custom_provider.AuthProvider();
+
+  final custom_widget.HomeScreenWidget customWidget =
+      custom_widget.HomeScreenWidget();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: HexColor(backgroundColor),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: HexColor(appBarColor),
-        title: Text(
-          "homeScreen.title".tr(),
-          style: TextStyle(color: HexColor(appBarTitleColor)),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: HexColor(black),
+      appBar: buildAppBar(),
       body: buildBody(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (() => signOut(context)),
-        child: const Icon(Icons.logout_rounded),
-      ),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      automaticallyImplyLeading: false,
+      backgroundColor: HexColor(appBarColor),
+      title: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        customWidget.buildAppBarButton(
+            context: context,
+            leftPadding: context.dynamicWidth(0.01),
+            text: "homeScreen.howToUseButton",
+            onPressed: () {}),
+        customWidget.buildAppBarButton(
+            context: context,
+            rightPadding: context.dynamicWidth(0.01),
+            text: "homeScreen.signOutButton",
+            onPressed: () => _authProvider.signOut(context))
+      ]),
     );
   }
 
   Widget buildBody() {
-    return Container(
-      padding: const EdgeInsets.only(left: 25, right: 25),
-      margin: const EdgeInsets.fromLTRB(25, 130, 25, 130),
-      decoration: BoxDecoration(color: HexColor(frameColor)),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            buildButton(
-                buttonText: "homeScreen.writeButton",
-                onPressed: (() => readNfcAndNavigate())),
-            // const SizedBox(
-            //   height: 25.0,
-            // ),
-            // buildButton(
-            //     buttonText: "homeScreen.updateButton", onPressed: () {}),
-            // const SizedBox(
-            //   height: 25.0,
-            // ),
-            // buildButton(buttonText: "homeScreen.clearButton", onPressed: () {}),
-          ],
-        ),
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.05)),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          customWidget.buildButtonRow(context: context, buttons: [
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.createButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.create),
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.updateButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.settings)
+          ]),
+          SizedBox(height: context.dynamicHeight(0.02)),
+          customWidget.buildButtonRow(context: context, buttons: [
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.databaseButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.layers_alt),
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.deleteButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.delete)
+          ]),
+          SizedBox(height: context.dynamicHeight(0.02)),
+          customWidget.buildButtonRow(context: context, buttons: [
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.wifiButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.wifi),
+            customWidget.buildButton(
+                context: context,
+                buttonText: "homeScreen.scanButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.camera_viewfinder)
+          ]),
+          SizedBox(height: context.dynamicHeight(0.02)),
+          customWidget.buildButtonRow(context: context, buttons: [
+            customWidget.buildButton(
+                context: context,
+                useRowWidget: true,
+                minimumSize: context.dynamicHeight(0.1),
+                buttonText: "homeScreen.changePasswordButton",
+                onPressed: () => navigateToWrite(),
+                icon: CupertinoIcons.lock_rotation)
+          ]),
+        ],
       ),
     );
   }
 
-  Widget buildButton(
-      {required String buttonText, required VoidCallback onPressed}) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const ContinuousRectangleBorder(),
-            minimumSize: const Size.fromHeight(90),
-            backgroundColor: HexColor(buttonColor)),
-        onPressed: onPressed,
-        child: Text(
-            style: TextStyle(fontSize: 25, color: HexColor(buttonTextColor)),
-            buttonText.tr()));
-  }
-
-  signOut(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
-      context,
-      CustomPageRoute(builder: (context) => const LoginScreen()),
-      (route) => false,
-    );
-  }
-
-  // readNfcAndNavigate() async {
-  //   try {
-  //     var tag = await FlutterNfcKit.poll();
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //           builder: (context) => WriteScreen(tag: tag),
-  //         ));
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //         const SnackBar(content: Text("Nfc okuma başarısız oldu")));
-  //   }
-  // }
-
-  readNfcAndNavigate() async {
+  navigateToWrite() async {
     Navigator.of(context).pushNamed("/write");
-//     try {
-//       var availability = await FlutterNfcKit.nfcAvailability;
-//       if (availability == NFCAvailability.available) {
-//         showDialog(
-//             context: context,
-//             barrierDismissible: false,
-//             builder: (BuildContext context) {
-//               return AlertDialog(
-//                 title: const Text("Approach an NFC Card"),
-//                 content: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: <Widget>[
-//                     Image.asset("assets/gif/nfc.gif"),
-//                   ],
-//                 ),
-//               );
-//             });
-// var tag = await FlutterNfcKit.poll();
-//         Navigator.of(context).pop();
-//         Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => WriteScreen(tag: tag),
-//             ));
-//       } else {
-//         showDialog(
-//             context: context,
-//             builder: (BuildContext context) {
-//               return const AlertDialog(
-//                 content: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: <Widget>[
-//                     Icon(
-//                       Icons.error,
-//                       color: Colors.red,
-//                       size: 50,
-//                     ),
-//                     SizedBox(
-//                       height: 20,
-//                     ),
-//                     Text("NFC disabled"),
-//                   ],
-//                 ),
-//               );
-//             });
-//       }
-//     } catch (e) {
-//       Navigator.of(context).pop();
-//       showDialog(
-//           context: context,
-//           builder: (BuildContext context) {
-//             return const AlertDialog(
-//               content: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: <Widget>[
-//                   Icon(
-//                     Icons.error,
-//                     color: Colors.red,
-//                     size: 50,
-//                   ),
-//                   SizedBox(
-//                     height: 20,
-//                   ),
-//                   Text("NFC okuma başarısız oldu"),
-//                 ],
-//               ),
-//             );
-//           });
-//     }
   }
 }

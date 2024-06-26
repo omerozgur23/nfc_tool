@@ -2,208 +2,176 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/screens/login_screen.dart';
-import 'package:nfc_tool/utils/route_animation.dart';
+import 'package:nfc_tool/utils/context_extensiton.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LanguageScreen extends StatelessWidget {
   const LanguageScreen({super.key});
+  final String englishBtnText = "English";
+  final String arabicBtnText = "عربي";
+  final String firstText = '"وداعا للبطاقات الورقية القديمة "';
+  final String secondText =
+      "التطبيق مجاني بالكامل وخاص بعملاء الشركة\nسواء الأفراد أو الشركات لإدارة بطاقاتهم الرقمية";
+  final String copyRightText = "languageScreen.copyRight";
+  final String navigateSiteBtnText = "قم بزيارة المتجر";
 
   @override
   Widget build(BuildContext context) {
-    const String englishBtnText = "English";
-    const String arabicBtnText = "عربي";
-    const String welcomeTextArabic = '" وداعا للبطاقات الورقية القديمة "';
-    // const String welcomeTextEnglish = "Welcome";
-    // const String sloganTextArabic = '"دعنا نعزز عملك"';
-    // const String sloganTextEnglish = '"Let\'s boost your business"';
-    const String copyRightText = "©2024 ExpressTap. All rights reserved.";
     return Scaffold(
+      backgroundColor: HexColor(backgroundColor),
       primary: false,
       appBar: AppBar(
         backgroundColor: HexColor(appBarColor),
       ),
-      backgroundColor: HexColor(backgroundColor),
-      body: Column(children: [
-        Expanded(
-          child: Stack(children: [
-            buildLogo(context),
-            Positioned(
-                top: MediaQuery.of(context).size.height * 0.13,
-                left: 0,
-                right: 0,
-                child: buildNewContainer()),
-            Container(
-              padding: const EdgeInsets.only(top: 30, bottom: 30),
-              margin: const EdgeInsets.fromLTRB(25, 150, 25, 30),
-              decoration: BoxDecoration(
-                  color: HexColor(frameColor),
-                  borderRadius: BorderRadius.circular(5.0)),
-              child: Column(
-                children: [
-                  buildSloganText(text: welcomeTextArabic, context: context),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 30, right: 25, top: 20),
-                    child: Text("التطبيق مجاني بالكامل وخاص بعملاء الشركة"),
-                  ),
-                  const Text(
-                      " سواء الأفراد أو الشركات لإدارة بطاقاتهم الرقمية"),
-                  buildGif(),
-                  Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        buildLanguageButton(
-                            context: context,
-                            buttonText: arabicBtnText,
-                            locale: const Locale("ar", "AR")),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        buildLanguageButton(
-                            context: context,
-                            buttonText: englishBtnText,
-                            locale: const Locale("en", "US"))
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ]),
+      body: buildBody(context),
+    );
+  }
+
+  Padding buildBody(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          context.dynamicWidth(0.06),
+          context.dynamicHeight(0.02),
+          context.dynamicWidth(0.06),
+          context.dynamicHeight(0.01)),
+      child: Column(children: [
+        Expanded(flex: 1, child: buildLogo()),
+        SizedBox(
+          height: context.dynamicHeight(0.02),
         ),
-        buildCopyRight(context: context, text: copyRightText),
+        Expanded(flex: 1, child: buildNavigateSiteButton(context)),
+        SizedBox(
+          height: context.dynamicHeight(0.010),
+        ),
+        Expanded(
+          flex: 9,
+          child: buildContainerBody(context),
+        ),
+        SizedBox(
+          height: context.dynamicHeight(0.04),
+        ),
+        Expanded(child: buildCopyRight()),
       ]),
     );
   }
 
-  Widget buildNewContainer() {
-    return GestureDetector(
-      onTap: () async {
-        const url = 'https://www.yourwebsite.com';
-        if (await canLaunch(url)) {
-          await launch(url);
-        } else {
-          // Handle the error if the URL can't be launched
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   const SnackBar(content: Text('Could not launch URL')),
-          // );
-        }
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 90),
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          color: HexColor(frameTwoColor),
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: const Center(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              ),
-              SizedBox(width: 15.0),
-              Text(
-                "قم بزيارة المتجر",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+  Center buildLogo() {
+    return Center(
+        child: Image.asset(
+      "assets/images/logo.png",
+      fit: BoxFit.contain,
+    ));
   }
 
-  Widget buildLogo(BuildContext context) {
-    return Positioned(
-      top: MediaQuery.of(context).size.height * 0.02,
-      left: 0,
-      right: 0,
-      child: Align(
-        alignment: Alignment.topCenter,
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height * 0.075,
-          child: Image.asset(
-            'assets/images/logo.png',
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildSloganText(
-      {required String text, required BuildContext context}) {
+  Padding buildNavigateSiteButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Text(
-        text,
-        style: TextStyle(
-            fontSize: MediaQuery.of(context).size.width * 0.044,
-            fontWeight: FontWeight.bold),
+      padding: EdgeInsets.symmetric(
+          horizontal: context.dynamicWidth(0.17),
+          vertical: context.dynamicHeight(0.01)),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              backgroundColor: HexColor(darkGrey)),
+          onPressed: () {
+            launchURL("https://www.ferhatozgur.info");
+          },
+          child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Icon(
+              Icons.arrow_back,
+              color: HexColor(white),
+            ),
+            SizedBox(
+              width: context.dynamicWidth(0.03),
+            ),
+            Text(
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: HexColor(white)),
+                navigateSiteBtnText),
+          ])),
+    );
+  }
+
+  Container buildContainerBody(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+          horizontal: context.dynamicWidth(0.05),
+          vertical: context.dynamicHeight(0.05)),
+      decoration: BoxDecoration(
+          color: HexColor(frameColor),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: Column(
+        children: [
+          Expanded(
+            child: Text(
+              firstText,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Text(
+              secondText,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Expanded(
+            flex: 4,
+            child: buildGif(),
+          ),
+          SizedBox(
+            height: context.dynamicHeight(0.02),
+          ),
+          Expanded(
+            child: buildLanguageButton(
+                context: context,
+                text: arabicBtnText,
+                locale: const Locale("ar", "AR")),
+          ),
+          SizedBox(
+            height: context.dynamicHeight(0.02),
+          ),
+          Expanded(
+            child: buildLanguageButton(
+                context: context,
+                text: englishBtnText,
+                locale: const Locale("en", "US")),
+          )
+        ],
       ),
     );
   }
 
-  Widget buildGif() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, bottom: 15),
-      child: Image.asset(
-        'assets/gif/nfc.gif',
-        fit: BoxFit.contain,
-      ),
+  Text buildCopyRight() => Text(copyRightText).tr();
+
+  Image buildGif() {
+    return Image.asset(
+      'assets/gif/nfc.gif',
+      fit: BoxFit.contain,
     );
   }
 
-  Widget buildLanguageButton(
-      {required String buttonText,
+  SizedBox buildLanguageButton(
+      {required String text,
       required Locale locale,
       required BuildContext context}) {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        backgroundColor: HexColor(buttonColor),
-        minimumSize: const Size(250, 50),
-        textStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      onPressed: () {
-        changeLocale(context, locale);
-        navigateToLoginScreen(context);
-      },
-      child: Text(
-        buttonText,
-        style: TextStyle(
-          color: HexColor(buttonTextColor),
-          fontSize: MediaQuery.of(context).size.width * 0.05,
-        ),
-      ),
-    );
-  }
-
-  Widget buildCopyRight({required BuildContext context, required String text}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: MediaQuery.of(context).size.width * 0.034,
-          ),
-        ),
-      ),
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              backgroundColor: HexColor(buttonColor)),
+          onPressed: () {
+            changeLocale(context, locale);
+            navigateToLoginScreen(context);
+          },
+          child: Text(
+            text,
+            style: TextStyle(color: HexColor(buttonTextColor), fontSize: 20),
+          )),
     );
   }
 
@@ -213,5 +181,14 @@ class LanguageScreen extends StatelessWidget {
 
   void navigateToLoginScreen(BuildContext context) {
     Navigator.of(context).pushNamed("/login");
+  }
+
+  void launchURL(String url) async {
+    Uri uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

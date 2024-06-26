@@ -1,4 +1,7 @@
 {
+    "languageScreen": {
+        "copyRight": "©2024 ExpressTap All Rights Reserved"
+    },
     "loginScreen": {
         "title": "Sign In",
         "emailInput": "Email",
@@ -7,17 +10,25 @@
         "changeLanguageButton": "Change Language",
         "forgotPasswordButton": "Forgot your password?",
         "errorLoginMessage": "The email or password is incorrect. Please check your information.",
-        "errorDialogOkButton": "OK"
+        "errorDialogOkButton": "OK",
+        "resetPasswordTitle": "Reset Password",
+        "resetPasswordInput": "Enter your email",
+        "resetPasswordSendButton": "Send",
+        "resetPasswordCancelButton": "Cancel"
     },
     "homeScreen": {
-        "title": "NFC TOOL",
-        "writeButton": "Write",
-        "updateButton": "Update",
-        "clearButton": "Clear"
+        "howToUseButton": "How To Use",
+        "signOutButton": "Sign Out",
+        "createButton": "New",
+        "updateButton": "Edit",
+        "scanButton": "Scan",
+        "deleteButton": "Delete",
+        "databaseButton": "Database",
+        "wifiButton": "Wi-Fi",
+        "changePasswordButton": "Change Password",
+        "setupButton": "How can to use"
     },
     "writeScreen": {
-        "title": "Write",
-        "addButton": "Add a record",
-        "optionsButton": "More options"
+        "title": "New"
     }
 }

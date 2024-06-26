@@ -1,4 +1,7 @@
 {
+    "languageScreen": {
+        "copyRight": "2024© ExpressTap All Rights Reserved"
+    },
     "loginScreen": {
         "title": "تسجيل الدخول",
         "emailInput": "بريد إلكتروني",
@@ -7,17 +10,25 @@
         "changeLanguageButton": "تغيير اللغة",
         "forgotPasswordButton": "نسيت كلمة السر؟",
         "errorLoginMessage": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى التحقق من المعلومات الخاصة بك.",
-        "errorDialogOkButton": "نعم"
+        "errorDialogOkButton": "نعم",
+        "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+        "resetPasswordInput": "أدخل بريدك الإلكتروني",
+        "resetPasswordSendButton": "يرسل",
+        "resetPasswordCancelButton": "يلغي"
     },
     "homeScreen": {
-        "title": "NFC TOOL",
-        "writeButton": "يكتب",
-        "updateButton": "تحديث",
-        "clearButton": "واضح"
+        "howToUseButton": "الاستخدام",
+        "signOutButton": "خروج",
+        "createButton": "جديد",
+        "updateButton": "تعديل",
+        "scanButton": "مسح ضوئي",
+        "deleteButton": "مسح",
+        "databaseButton": "قواعد البيانات",
+        "wifiButton": "واي فاي",
+        "changePasswordButton": "تغيير الرقم السري",
+        "setupButton": "كيف يمكنني الإعداد"
     },
     "writeScreen": {
-        "title": "يكتب",
-        "addButton": "إضافة سجل",
-        "optionsButton": "المزيد من الخيارات"
+        "title": "جديد"
     }
 }

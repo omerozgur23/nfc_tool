@@ -1,10 +1,15 @@
+import 'dart:ui';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/screens/language_screen.dart';
+// import 'package:nfc_tool/utils/Auth_provider.dart';
+import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:nfc_tool/auth/auth_provider.dart' as auth_provider;
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,7 +19,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final auth_provider.AuthProvider authProvider = auth_provider.AuthProvider();
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool obscureText = true;
@@ -25,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
       resizeToAvoidBottomInset: false,
       backgroundColor: HexColor(backgroundColor),
       appBar: buildAppBar(),
-      body: buildLoginForm(),
+      body: buildBody(context),
     );
   }
 
@@ -41,66 +47,74 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildLoginForm() {
-    double screenHeight = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      child: Container(
-        height: screenHeight * 0.8,
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
-        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 35),
-        decoration: BoxDecoration(
-            color: HexColor(frameColor),
-            borderRadius: BorderRadius.circular(5.0)),
-        child: Form(
+  Container buildBody(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(
+          horizontal: context.dynamicWidth(0.06),
+          vertical: context.dynamicHeight(0.06)),
+      padding: EdgeInsets.symmetric(horizontal: context.dynamicWidth(0.05)),
+      decoration: BoxDecoration(
+          color: HexColor(frameColor),
+          borderRadius: BorderRadius.circular(5.0)),
+      child: Form(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          buildEmailInput(),
+          SizedBox(height: context.dynamicHeight(0.02)),
+          buildPasswordInput(),
+          SizedBox(height: context.dynamicHeight(0.02)),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              buildEmailInput(),
-              const SizedBox(height: 16.0),
-              buildPasswordInput(),
-              const SizedBox(height: 16.0),
-              Text("loginScreen.forgotPasswordButton".tr()),
-              const SizedBox(height: 16.0),
-              buildSignInButton(),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => showResetPasswordDialog(context),
+                  child: Text(
+                    "loginScreen.forgotPasswordButton".tr(),
+                  ),
+                ),
+              ),
             ],
           ),
-        ),
-      ),
+          SizedBox(height: context.dynamicHeight(0.06)),
+          buildSignInButton()
+        ],
+      )),
     );
   }
 
-  Widget buildEmailInput() {
+  TextFormField buildEmailInput() {
     return TextFormField(
       controller: _emailController,
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.email),
           labelText: "loginScreen.emailInput".tr(),
-          labelStyle: const TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: HexColor(black)),
           border: const OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(5.0)),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: HexColor(black), width: 1.5),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           )),
       keyboardType: TextInputType.emailAddress,
       inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s"))],
     );
   }
 
-  Widget buildPasswordInput() {
+  TextFormField buildPasswordInput() {
     return TextFormField(
       controller: _passwordController,
       decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock),
           labelText: "loginScreen.passwordInput".tr(),
-          labelStyle: const TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color: HexColor(black)),
           border: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.0))),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.black, width: 1.5),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: HexColor(black), width: 1.5),
+            borderRadius: const BorderRadius.all(Radius.circular(5.0)),
           ),
           suffixIcon: IconButton(
               onPressed: () {
@@ -120,103 +134,94 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget buildSignInButton() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 50, right: 50, top: 30),
+  SizedBox buildSignInButton() {
+    return SizedBox(
+      width: context.dynamicWidth(0.5),
+      height: context.dynamicHeight(0.07),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          shape: ContinuousRectangleBorder(
+          shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
           ),
           backgroundColor: HexColor(buttonColor),
-          minimumSize: const Size.fromHeight(50),
         ),
         onPressed: () {
           FocusScope.of(context).unfocus();
-          signInWithEmailAndPassword();
+          authProvider.signInWithEmailAndPassword(
+              context: context,
+              email: _emailController.text,
+              password: _passwordController.text);
         },
         child: Text(
-            style: TextStyle(
-                color: HexColor(buttonTextColor),
-                fontSize: 20,
-                fontWeight: FontWeight.w500),
-            "loginScreen.signInButton".tr()),
+          "loginScreen.signInButton".tr(),
+          style: TextStyle(
+              color: HexColor(buttonTextColor),
+              fontSize: 20,
+              fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
 
-  Widget buildChangeLanguageButton() {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            shape: const ContinuousRectangleBorder(),
-            backgroundColor: HexColor(buttonColor),
-            minimumSize: const Size.fromHeight(50)),
-        onPressed: (() => navigateToLanguageScreen)(),
-        child: Text(
-            style: TextStyle(
-                color: HexColor(buttonTextColor),
-                fontSize: 20,
-                fontWeight: FontWeight.w500),
-            "loginScreen.changeLanguageButton".tr()));
-  }
-
-  void navigateToLanguageScreen() {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LanguageScreen(),
-      ),
-      (Route<dynamic> route) => false,
-    );
-  }
-
-  Future<void> signInWithEmailAndPassword() async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
-      Navigator.of(context).pushNamed("/home");
-    } catch (e) {
-      errorDialog();
-    }
-  }
-
-  Future<dynamic> errorDialog() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            backgroundColor: HexColor(frameColor),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                // Icon(
-                //   Icons.cancel_outlined,
-                //   color: HexColor(buttonColor),
-                //   size: 50,
-                // ),
-                Image.asset("assets/gif/error.gif"),
-                const SizedBox(
-                  height: 20,
+  void showResetPasswordDialog(BuildContext context) {
+    final TextEditingController resetEmailController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: HexColor(frameColor),
+          title: Text(
+              textAlign: TextAlign.center,
+              'loginScreen.resetPasswordTitle'.tr()),
+          content: TextField(
+            autofocus: true,
+            controller: resetEmailController,
+            decoration: InputDecoration(
+                labelText: 'loginScreen.resetPasswordInput'.tr(),
+                labelStyle: TextStyle(color: HexColor(black)),
+                border: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 ),
-                Text("loginScreen.errorLoginMessage".tr()),
-              ],
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: HexColor(black), width: 1.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+                )),
+            keyboardType: TextInputType.emailAddress,
+            inputFormatters: [FilteringTextInputFormatter.deny(RegExp(r"\s"))],
+          ),
+          actionsAlignment: MainAxisAlignment.center,
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: HexColor(buttonColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0))),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                  style: TextStyle(color: HexColor(buttonTextColor)),
+                  'loginScreen.resetPasswordCancelButton'.tr()),
             ),
-            actionsAlignment: MainAxisAlignment.center,
-            actions: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: HexColor(buttonColor),
-                      shape: const ContinuousRectangleBorder()),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text(
-                      style: TextStyle(color: HexColor(buttonTextColor)),
-                      "loginScreen.errorDialogOkButton".tr()))
-            ],
-          );
-        });
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: HexColor(buttonColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5.0))),
+              onPressed: () {
+                authProvider.resetPassword(
+                  email: resetEmailController.text,
+                  context: context,
+                );
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                  style: TextStyle(color: HexColor(buttonTextColor)),
+                  'loginScreen.resetPasswordSendButton'.tr()),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

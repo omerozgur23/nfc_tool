@@ -1,9 +1,12 @@
-const String appBarColor = "#BE1C2D";
+const String appBarColor = "#181818";
 const String appBarTitleColor = "#FFFFFF";
 const String appBarIconColor = "#FFFFFF";
-const String appBarSettingsButton = "#FFFFFF";
+const String appBarButtonColor = "#BE1C2D";
 const String backgroundColor = "#CACACA";
 const String frameColor = "#FFFFFF";
-const String frameTwoColor = "#545454";
 const String buttonColor = "#BE1C2D";
 const String buttonTextColor = "#FFFFFF";
+const String homeScreenButtonColor = "#313131";
+const String darkGrey = "#545454";
+const String white = "#FFFFFF";
+const String black = "#000";

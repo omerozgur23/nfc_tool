@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_tool/screens/home_screen.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
@@ -14,17 +15,36 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // Kullanıcı oturum açma durumunu kontrol et
+  User? user = FirebaseAuth.instance.currentUser;
   runApp(
     EasyLocalization(
         supportedLocales: const [Locale('en', 'US'), Locale('ar', 'AR')],
         path: 'assets/translations',
         fallbackLocale: const Locale('en', 'US'),
-        child: const MyApp()),
+        child: MyApp(
+          user: user,
+        )),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MyApp extends StatefulWidget {
+  final User? user;
+  const MyApp({super.key, this.user});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  User? _user;
+
+  @override
+  void initState() {
+    super.initState();
+    // initState içinde _user'ı widget.user'dan başlatın
+    _user = widget.user;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +63,7 @@ class MyApp extends StatelessWidget {
           settings: settings,
         );
       },
-      // home: const LanguageScreen(),
+      home: widget.user != null ? const HomeScreen() : const LanguageScreen(),
     );
   }
 
@@ -55,7 +75,6 @@ class MyApp extends StatelessWidget {
         return const HomeScreen();
       case '/write':
         return const WriteScreen();
-      // Diğer sayfaları buraya ekleyin
       default:
         return const LanguageScreen();
     }
