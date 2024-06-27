@@ -29,6 +29,59 @@
         "setupButton": "How can to use"
     },
     "writeScreen": {
-        "title": "New"
+        "title": "New NFC",
+        "saveButton": "Save",
+        "cancelButton": "Cancel",
+        "inputLabel": {
+            "profilePhoto": "Profile Photo",
+            "fullName": "Full Name",
+            "companyName": "Company Name",
+            "jobTitle": "Job Title",
+            "phone": "Phone Number",
+            "mobilePhone": "Mobile Number",
+            "email": "Email",
+            "website": "Website",
+            "address": "Address",
+            "notes": "Notes"
+        }
+    },
+    "editScreen": {
+        "title": "Edit NFC",
+        "saveButton": "Save",
+        "cancelButton": "Cancel",
+        "inputLabel": {
+            "profilePhoto": "Profile Photo",
+            "fullName": "Full Name",
+            "companyName": "Company Name",
+            "jobTitle": "Job Title",
+            "phone": "Phone Number",
+            "mobilePhone": "Mobile Number",
+            "email": "Email",
+            "website": "Website",
+            "address": "Address",
+            "notes": "Notes"
+        }
+    },
+    "wifiScreen": {
+        "title": "Wifi",
+        "inputLabel": {
+            "authentication": "Authentication",
+            "encryption": "Encryption",
+            "ssid": "SSID",
+            "password": "Password"
+        }
+    },
+    "databaseScreen": {
+        "title": "Database",
+        "fullName": "Full Name",
+        "createdDate": "Created Date"
+    },
+    "changepasswordScreen": {
+        "title": "Change Password",
+        "inputLabel": {
+            "lastPassword": "Last Password",
+            "newPassword": "New Password",
+            "confirmPassword": "Confirm Password"
+        }
     }
 }

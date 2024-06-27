@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nfc_tool/screens/change_password_screen.dart';
+import 'package:nfc_tool/screens/database_screen.dart';
+import 'package:nfc_tool/screens/edit_screen.dart';
 import 'package:nfc_tool/screens/home_screen.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nfc_tool/screens/login_screen.dart';
+import 'package:nfc_tool/screens/wifi_screen.dart';
 import 'package:nfc_tool/screens/write_screen.dart';
 import 'firebase_options.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -75,6 +79,14 @@ class _MyAppState extends State<MyApp> {
         return const HomeScreen();
       case '/write':
         return const WriteScreen();
+      case '/edit':
+        return const EditScreen();
+      case '/wifi':
+        return const WifiScreen();
+      case '/database':
+        return DatabaseScreen();
+      case '/changePassword':
+        return const ChangePasswordScreen();
       default:
         return const LanguageScreen();
     }

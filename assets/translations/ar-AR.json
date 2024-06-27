@@ -29,6 +29,59 @@
         "setupButton": "كيف يمكنني الإعداد"
     },
     "writeScreen": {
-        "title": "جديد"
+        "title": "جديد NFC",
+        "saveButton": "يحفظ",
+        "cancelButton": "يلغي",
+        "inputLabel": {
+            "profilePhoto": "صورة الملف الشخصي",
+            "fullName": "الاسم الكامل",
+            "companyName": "اسم الشركة",
+            "jobTitle": "مسمى وظيفي",
+            "phone": "رقم التليفون",
+            "mobilePhone": "رقم الهاتف المحمول",
+            "email": "بريد إلكتروني",
+            "website": "موقع إلكتروني",
+            "address": "عنوان",
+            "notes": "ملحوظات"
+        }
+    },
+    "editScreen": {
+        "title": "يحرر NFC",
+        "saveButton": "يحفظ",
+        "cancelButton": "يلغي",
+        "inputLabel": {
+            "profilePhoto": "صورة الملف الشخصي",
+            "fullName": "الاسم الكامل",
+            "companyName": "اسم الشركة",
+            "jobTitle": "مسمى وظيفي",
+            "phone": "رقم التليفون",
+            "mobilePhone": "رقم الهاتف المحمول",
+            "email": "بريد إلكتروني",
+            "website": "موقع إلكتروني",
+            "address": "عنوان",
+            "notes": "ملحوظات"
+        }
+    },
+    "wifiScreen": {
+        "title": "Wifi",
+        "inputLabel": {
+            "authentication": "Authentication",
+            "encryption": "Encryption",
+            "ssid": "SSID",
+            "password": "Password"
+        }
+    },
+    "databaseScreen": {
+        "title": "قاعدة البيانات",
+        "fullName": "الاسم الكامل",
+        "createdDate": "تاريخ الإنشاء"
+    },
+    "changepasswordScreen": {
+        "title": "تغيير كلمة المرور",
+        "inputLabel": {
+            "lastPassword": "كلمة المرور الأخيرة",
+            "newPassword": "كلمة المرور الجديدة",
+            "confirmPassword": "تأكيد كلمة المرور"
+        }
     }
 }

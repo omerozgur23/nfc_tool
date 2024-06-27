@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: HexColor(black),
       appBar: buildAppBar(),
       body: buildBody(),
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.updateButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () => navigateToEdit(),
                 icon: CupertinoIcons.settings)
           ]),
           SizedBox(height: context.dynamicHeight(0.02)),
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.databaseButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () => navigateToDatabase(),
                 icon: CupertinoIcons.layers_alt),
             customWidget.buildButton(
                 context: context,
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.wifiButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () => navigateToWifi(),
                 icon: CupertinoIcons.wifi),
             customWidget.buildButton(
                 context: context,
@@ -100,7 +101,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 useRowWidget: true,
                 minimumSize: context.dynamicHeight(0.1),
                 buttonText: "homeScreen.changePasswordButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () => navigateToChangePassword(),
                 icon: CupertinoIcons.lock_rotation)
           ]),
         ],
@@ -110,5 +111,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   navigateToWrite() async {
     Navigator.of(context).pushNamed("/write");
+  }
+
+  navigateToEdit() async {
+    Navigator.of(context).pushNamed("/edit");
+  }
+
+  navigateToWifi() async {
+    Navigator.of(context).pushNamed("/wifi");
+  }
+
+  navigateToDatabase() async {
+    Navigator.of(context).pushNamed("/database");
+  }
+
+  navigateToChangePassword() async {
+    Navigator.of(context).pushNamed("/changePassword");
   }
 }

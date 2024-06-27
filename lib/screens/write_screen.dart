@@ -1,17 +1,26 @@
+import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:ndef/ndef.dart' as ndef;
-import 'package:ndef/record.dart';
-import 'package:ndef/records/media/mime.dart';
-import 'package:ndef/records/well_known/text.dart';
-import 'package:ndef/records/well_known/uri.dart';
-import 'package:ndef/utilities.dart';
+import 'package:nfc_tool/custom_widgets/bottom_bar_widget.dart';
+import 'package:nfc_tool/custom_widgets/write_screen_widget.dart';
+import 'package:nfc_tool/models/card.dart' as card;
+// import 'package:ndef/ndef.dart' as ndef;
+// import 'package:ndef/record.dart';
+// import 'package:ndef/records/media/mime.dart';
+// import 'package:ndef/records/well_known/text.dart';
+// import 'package:ndef/records/well_known/uri.dart';
+// import 'package:ndef/utilities.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'dart:convert'; // UTF-8 encode işlemi için gerekli
-import 'dart:typed_data';
-import 'package:vcf_dart/vcf_dart.dart';
+import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:image_picker/image_picker.dart';
+// import 'dart:convert'; // UTF-8 encode işlemi için gerekli
+// import 'dart:typed_data';
+// import 'package:vcf_dart/vcf_dart.dart';
 
 class WriteScreen extends StatefulWidget {
   const WriteScreen({super.key});
@@ -21,65 +30,150 @@ class WriteScreen extends StatefulWidget {
 }
 
 class _WriteScreenState extends State<WriteScreen> {
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
+  WriteScreenWidget writeScreenWidget = WriteScreenWidget();
+  BottomBarWidget bottomBarWidget = BottomBarWidget();
+  var formKey = GlobalKey<FormState>();
+  card.Card createCard = card.Card(null, "", "", "", "", "", "", "", "", "");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: HexColor(appBarColor),
-        iconTheme: IconThemeData(color: HexColor(appBarIconColor)),
-        centerTitle: true,
-        title: Text(
-          "writeScreen.title".tr(),
-          style: TextStyle(color: HexColor(appBarTitleColor)),
-        ),
-      ),
-      body: buildWriteScreen(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // writeToCard(context: context);
-          // checkNfcTagSize();
-        },
-        child: const Icon(Icons.save),
+      appBar: buildAppBar(),
+      body: buildBody(),
+      bottomNavigationBar: bottomBarWidget.buildBottomBar(context),
+    );
+  }
+
+  AppBar buildAppBar() {
+    return AppBar(
+      backgroundColor: HexColor(appBarColor),
+      iconTheme: IconThemeData(color: HexColor(appBarIconColor)),
+      centerTitle: true,
+      title: Text(
+        "writeScreen.title".tr(),
+        style: TextStyle(color: HexColor(appBarTitleColor)),
       ),
     );
   }
 
-  Widget buildWriteScreen() {
-    return Container(
-      margin: const EdgeInsets.all(20.0),
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: TextFormField(
-              controller: _phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Phone Number',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: TextFormField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          // Text("NFC ID : ${widget.tag.id}"),
-        ],
+  SingleChildScrollView buildBody() {
+    return SingleChildScrollView(
+      child: Container(
+          margin: EdgeInsets.symmetric(
+              horizontal: context.dynamicWidth(0.015),
+              vertical: context.dynamicHeight(0.015)),
+          child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  buildProfilePhotoPicker(),
+                  SizedBox(
+                    height: context.dynamicHeight(0.015),
+                  ),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.fullName",
+                      icon: CupertinoIcons.person_alt_circle,
+                      onSaved: (value) {
+                        createCard.fullName = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.companyName",
+                      icon: CupertinoIcons.building_2_fill,
+                      onSaved: (value) {
+                        createCard.companyName = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.jobTitle",
+                      icon: CupertinoIcons.briefcase,
+                      onSaved: (value) {
+                        createCard.jobTitle = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.phone",
+                      icon: CupertinoIcons.phone,
+                      onSaved: (value) {
+                        createCard.phone = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.mobilePhone",
+                      icon: CupertinoIcons.device_phone_portrait,
+                      onSaved: (value) {
+                        createCard.mobilePhone = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.email",
+                      icon: CupertinoIcons.mail,
+                      onSaved: (value) {
+                        createCard.email = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.website",
+                      icon: CupertinoIcons.link,
+                      onSaved: (value) {
+                        createCard.website = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.address",
+                      icon: CupertinoIcons.location,
+                      onSaved: (value) {
+                        createCard.address = value;
+                      }),
+                  writeScreenWidget.buildInput(
+                      context: context,
+                      labelText: "writeScreen.inputLabel.notes",
+                      icon: CupertinoIcons.square_pencil,
+                      maxLines: 3,
+                      onSaved: (value) {
+                        createCard.notes = value;
+                      }),
+                ],
+              ))),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+
+    if (pickedFile != null) {
+      setState(() {
+        createCard.profileImage = File(pickedFile.path);
+      });
+    } else {
+      throw "No Image File";
+    }
+  }
+
+  Widget buildProfilePhotoPicker() {
+    return GestureDetector(
+      onTap: _pickImage,
+      child: CircleAvatar(
+        radius: 40,
+        backgroundColor: Colors.grey[200],
+        backgroundImage: createCard.profileImage != null
+            ? FileImage(createCard.profileImage!)
+            : null,
+        child: createCard.profileImage == null
+            ? Icon(
+                CupertinoIcons.profile_circled,
+                size: 40,
+                color: Colors.grey[800],
+              )
+            : null,
       ),
     );
   }
 
+  // Text("NFC ID : ${widget.tag.id}"),
   // Future writeToCard({required BuildContext context}) async {
   //   showDialog(
   //     context: context,
