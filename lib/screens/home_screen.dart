@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/utils/context_extensiton.dart';
 import 'package:nfc_tool/auth/auth_provider.dart' as custom_provider;
 import 'package:nfc_tool/custom_widgets/home_screen_widget.dart'
     as custom_widget;
+// import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -20,6 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final custom_widget.HomeScreenWidget customWidget =
       custom_widget.HomeScreenWidget();
+
+  String _scanBarcode = 'Unknown';
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
             context: context,
             leftPadding: context.dynamicWidth(0.01),
             text: "homeScreen.howToUseButton",
-            onPressed: () {}),
+            onPressed: () => navigateToHowToUse()),
         customWidget.buildAppBarButton(
             context: context,
             rightPadding: context.dynamicWidth(0.01),
@@ -91,7 +96,11 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.scanButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () {
+                  // scanCard();
+                  scanQR();
+                  // Navigator.of(context).pushNamed("/test");
+                },
                 icon: CupertinoIcons.camera_viewfinder)
           ]),
           SizedBox(height: context.dynamicHeight(0.02)),
@@ -107,6 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  navigateToHowToUse() async {
+    Navigator.of(context).pushNamed("/howToUse");
   }
 
   navigateToWrite() async {
@@ -127,5 +140,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   navigateToChangePassword() async {
     Navigator.of(context).pushNamed("/changePassword");
+  }
+
+  Future<void> scanQR() async {
+    String barcodeScanRes;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+          '#ff6666', 'Cancel', true, ScanMode.QR);
+      print(barcodeScanRes);
+    } on PlatformException {
+      barcodeScanRes = 'Failed to get platform version.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _scanBarcode = barcodeScanRes;
+    });
   }
 }

@@ -21,14 +21,14 @@ class _EditScreenState extends State<EditScreen> {
   EditScreenWidget editScreenWidget = EditScreenWidget();
   BottomBarWidget bottomBarWidget = BottomBarWidget();
   var formKey = GlobalKey<FormState>();
-  card.Card createCard = card.Card(null, "", "", "", "", "", "", "", "", "");
+  card.Card createCard = card.Card(null, "", "", "", "", "", "", "", "");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
       body: buildBody(),
-      bottomNavigationBar: bottomBarWidget.buildBottomBar(context),
+      bottomNavigationBar: bottomBarWidget.buildBottomBar(context, () {}),
     );
   }
 
@@ -113,14 +113,6 @@ class _EditScreenState extends State<EditScreen> {
                       icon: CupertinoIcons.location,
                       onSaved: (value) {
                         createCard.address = value;
-                      }),
-                  editScreenWidget.buildInput(
-                      context: context,
-                      labelText: "editScreen.inputLabel.notes",
-                      icon: CupertinoIcons.square_pencil,
-                      maxLines: 3,
-                      onSaved: (value) {
-                        createCard.notes = value;
                       }),
                 ],
               ))),

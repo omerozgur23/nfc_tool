@@ -29,7 +29,7 @@
         "setupButton": "كيف يمكنني الإعداد"
     },
     "writeScreen": {
-        "title": "جديد NFC",
+        "title": "جديد",
         "saveButton": "يحفظ",
         "cancelButton": "يلغي",
         "inputLabel": {
@@ -41,12 +41,11 @@
             "mobilePhone": "رقم الهاتف المحمول",
             "email": "بريد إلكتروني",
             "website": "موقع إلكتروني",
-            "address": "عنوان",
-            "notes": "ملحوظات"
+            "address": "عنوان"
         }
     },
     "editScreen": {
-        "title": "يحرر NFC",
+        "title": "يحرر",
         "saveButton": "يحفظ",
         "cancelButton": "يلغي",
         "inputLabel": {
@@ -58,8 +57,7 @@
             "mobilePhone": "رقم الهاتف المحمول",
             "email": "بريد إلكتروني",
             "website": "موقع إلكتروني",
-            "address": "عنوان",
-            "notes": "ملحوظات"
+            "address": "عنوان"
         }
     },
     "wifiScreen": {
@@ -76,12 +74,14 @@
         "fullName": "الاسم الكامل",
         "createdDate": "تاريخ الإنشاء"
     },
-    "changepasswordScreen": {
-        "title": "تغيير كلمة المرور",
-        "inputLabel": {
-            "lastPassword": "كلمة المرور الأخيرة",
-            "newPassword": "كلمة المرور الجديدة",
-            "confirmPassword": "تأكيد كلمة المرور"
-        }
+    "entryPasswordScreen": {
+        "title": "إدخل كلمة السر الحالية",
+        "errorWrongPassword": "كلمة مرور خاطئة",
+        "newPassword": "كلمة المرور الجديدة",
+        "confirmPassword": "تأكيد كلمة المرور"
+    },
+    "howToUseScreen": {
+        "title": "كيف تستعمل",
+        "listText": "اماتامات أبجد هوز دولور الجلوس امات"
     }
 }

@@ -29,7 +29,7 @@
         "setupButton": "How can to use"
     },
     "writeScreen": {
-        "title": "New NFC",
+        "title": "New",
         "saveButton": "Save",
         "cancelButton": "Cancel",
         "inputLabel": {
@@ -41,12 +41,11 @@
             "mobilePhone": "Mobile Number",
             "email": "Email",
             "website": "Website",
-            "address": "Address",
-            "notes": "Notes"
+            "address": "Address"
         }
     },
     "editScreen": {
-        "title": "Edit NFC",
+        "title": "Edit",
         "saveButton": "Save",
         "cancelButton": "Cancel",
         "inputLabel": {
@@ -58,8 +57,7 @@
             "mobilePhone": "Mobile Number",
             "email": "Email",
             "website": "Website",
-            "address": "Address",
-            "notes": "Notes"
+            "address": "Address"
         }
     },
     "wifiScreen": {
@@ -76,12 +74,14 @@
         "fullName": "Full Name",
         "createdDate": "Created Date"
     },
-    "changepasswordScreen": {
-        "title": "Change Password",
-        "inputLabel": {
-            "lastPassword": "Last Password",
-            "newPassword": "New Password",
-            "confirmPassword": "Confirm Password"
-        }
+    "entryPasswordScreen": {
+        "title": "Enter Current Password",
+        "errorWrongPassword": "Wrong password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password"
+    },
+    "howToUseScreen": {
+        "title": "How To Use",
+        "listText": "Lorem ipsum dolor sit amet, consectetur"
     }
 }

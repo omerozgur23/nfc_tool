@@ -137,6 +137,7 @@ class LanguageScreen extends StatelessWidget {
             child: buildLanguageButton(
                 context: context,
                 text: englishBtnText,
+                fontSize: context.dynamicHeight(0.020),
                 locale: const Locale("en", "US")),
           )
         ],
@@ -154,7 +155,8 @@ class LanguageScreen extends StatelessWidget {
   }
 
   SizedBox buildLanguageButton(
-      {required String text,
+      {double? fontSize,
+      required String text,
       required Locale locale,
       required BuildContext context}) {
     return SizedBox(
@@ -170,7 +172,9 @@ class LanguageScreen extends StatelessWidget {
           },
           child: Text(
             text,
-            style: TextStyle(color: HexColor(buttonTextColor), fontSize: 20),
+            style: TextStyle(
+                color: HexColor(buttonTextColor),
+                fontSize: fontSize ?? context.dynamicHeight(0.023)),
           )),
     );
   }

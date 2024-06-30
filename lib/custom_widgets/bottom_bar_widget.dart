@@ -6,7 +6,7 @@ import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/utils/context_extensiton.dart';
 
 class BottomBarWidget {
-  Container buildBottomBar(BuildContext context) {
+  Container buildBottomBar(BuildContext context, VoidCallback onPressed) {
     return Container(
       color: HexColor(buttonColor),
       padding: EdgeInsets.symmetric(
@@ -31,7 +31,7 @@ class BottomBarWidget {
               child: buildBottomBarButton(
             context: context,
             buttonText: "writeScreen.saveButton",
-            onpressed: () {},
+            onpressed: onPressed,
           )),
           SizedBox(
             width: context.dynamicWidth(0.1),

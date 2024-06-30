@@ -1,13 +1,8 @@
-import 'dart:ui';
-
 import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-// import 'package:nfc_tool/utils/Auth_provider.dart';
 import 'package:nfc_tool/utils/context_extensiton.dart';
 import 'package:nfc_tool/auth/auth_provider.dart' as auth_provider;
 
@@ -137,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
   SizedBox buildSignInButton() {
     return SizedBox(
       width: context.dynamicWidth(0.5),
-      height: context.dynamicHeight(0.07),
+      height: context.dynamicHeight(0.050),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(

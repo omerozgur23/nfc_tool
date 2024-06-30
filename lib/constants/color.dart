@@ -10,3 +10,4 @@ const String homeScreenButtonColor = "#313131";
 const String darkGrey = "#545454";
 const String white = "#FFFFFF";
 const String black = "#000";
+const String red = "#F44336";

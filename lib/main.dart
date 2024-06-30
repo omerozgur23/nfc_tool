@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:nfc_tool/screens/change_password_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:nfc_tool/screens/database_screen.dart';
 import 'package:nfc_tool/screens/edit_screen.dart';
+import 'package:nfc_tool/screens/entry_password_screen.dart';
 import 'package:nfc_tool/screens/home_screen.dart';
+import 'package:nfc_tool/screens/how_to_use_screen.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:nfc_tool/screens/login_screen.dart';
 import 'package:nfc_tool/screens/wifi_screen.dart';
 import 'package:nfc_tool/screens/write_screen.dart';
+import 'package:nfc_tool/test.dart';
 import 'firebase_options.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:nfc_tool/utils/custom_page_route.dart';
@@ -21,6 +24,11 @@ void main() async {
   );
   // Kullanıcı oturum açma durumunu kontrol et
   User? user = FirebaseAuth.instance.currentUser;
+  // Sadece dikeyde çalışmasını sağlar
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(
     EasyLocalization(
         supportedLocales: const [Locale('en', 'US'), Locale('ar', 'AR')],
@@ -86,7 +94,11 @@ class _MyAppState extends State<MyApp> {
       case '/database':
         return DatabaseScreen();
       case '/changePassword':
-        return const ChangePasswordScreen();
+        return const EntryPasswordScreen();
+      case '/howToUse':
+        return const HowToUseScreen();
+      case '/test':
+        return TestScreen();
       default:
         return const LanguageScreen();
     }
