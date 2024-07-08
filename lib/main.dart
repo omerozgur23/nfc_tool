@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nfc_tool/models/card.dart';
 import 'package:nfc_tool/screens/database_screen.dart';
 import 'package:nfc_tool/screens/edit_screen.dart';
 import 'package:nfc_tool/screens/entry_password_screen.dart';
@@ -14,7 +15,7 @@ import 'package:nfc_tool/screens/write_screen.dart';
 import 'package:nfc_tool/test.dart';
 import 'firebase_options.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:nfc_tool/utils/custom_page_route.dart';
+import 'package:nfc_tool/utils/page_route/custom_page_route.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -87,8 +88,8 @@ class _MyAppState extends State<MyApp> {
         return const HomeScreen();
       case '/write':
         return const WriteScreen();
-      case '/edit':
-        return const EditScreen();
+      // case '/edit':
+      //   return const EditScreen();
       case '/wifi':
         return const WifiScreen();
       case '/database':

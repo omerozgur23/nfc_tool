@@ -1,13 +1,17 @@
+import 'dart:convert';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/custom_widgets/bottom_bar_widget.dart';
 import 'package:nfc_tool/custom_widgets/wifi_screen_widget.dart';
 import 'package:nfc_tool/enums/wifi_authentications.dart';
 import 'package:nfc_tool/enums/wifi_encryptions.dart';
-import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:nfc_tool/utils/media_query/context_extensiton.dart';
+import 'package:ndef/ndef.dart';
 
 class WifiScreen extends StatefulWidget {
   const WifiScreen({super.key});
@@ -28,6 +32,7 @@ class _WifiScreenState extends State<WifiScreen> {
   TextEditingController passwordController = TextEditingController();
   String? selectedAuthentication;
   String? selectedEncryption;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

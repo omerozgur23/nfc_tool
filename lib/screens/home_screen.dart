@@ -2,13 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:nfc_tool/screens/edit_screen.dart';
+import 'package:nfc_tool/services/nfc_erase.dart';
+import 'package:nfc_tool/services/nfc_reader.dart';
+import 'package:nfc_tool/utils/media_query/context_extensiton.dart';
 import 'package:nfc_tool/auth/auth_provider.dart' as custom_provider;
 import 'package:nfc_tool/custom_widgets/home_screen_widget.dart'
     as custom_widget;
 // import 'package:permission_handler/permission_handler.dart';
+import 'package:nfc_tool/models/card.dart' as c;
+import 'package:nfc_tool/utils/page_route/custom_page_route.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +29,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final custom_widget.HomeScreenWidget customWidget =
       custom_widget.HomeScreenWidget();
+
+  final NfcErase nfcErase = NfcErase();
+  final NFCReader nfcReader = NFCReader();
 
   String _scanBarcode = 'Unknown';
 
@@ -70,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.updateButton",
-                onPressed: () => navigateToEdit(),
+                onPressed: () => navigateToEdit(context),
                 icon: CupertinoIcons.settings)
           ]),
           SizedBox(height: context.dynamicHeight(0.02)),
@@ -83,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
             customWidget.buildButton(
                 context: context,
                 buttonText: "homeScreen.deleteButton",
-                onPressed: () => navigateToWrite(),
+                onPressed: () => deleteCard(),
                 icon: CupertinoIcons.delete)
           ]),
           SizedBox(height: context.dynamicHeight(0.02)),
@@ -97,7 +106,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 context: context,
                 buttonText: "homeScreen.scanButton",
                 onPressed: () {
-                  // scanCard();
                   scanQR();
                   // Navigator.of(context).pushNamed("/test");
                 },
@@ -126,8 +134,23 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).pushNamed("/write");
   }
 
-  navigateToEdit() async {
-    Navigator.of(context).pushNamed("/edit");
+  void deleteCard() async {
+    try {
+      await nfcErase.clearNfcTag(context);
+      await FlutterNfcKit.finish(
+          iosAlertMessage: "Etiket başarıyla temizlendi!");
+    } catch (e) {
+      await FlutterNfcKit.finish(
+          iosErrorMessage: "Etiket temizleme başarısız oldu: $e");
+    }
+  }
+
+  Future<void> navigateToEdit(BuildContext context) async {
+    var result = await nfcReader.readFromNfcTag(context);
+    if (result is c.Card) {
+      Navigator.push(context,
+          CustomPageRoute(builder: (context) => EditScreen(card: result)));
+    }
   }
 
   navigateToWifi() async {

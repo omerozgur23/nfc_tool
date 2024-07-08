@@ -2,7 +2,7 @@ import 'dart:io';
 
 class Card {
   int? id;
-  File? profileImage;
+  // File? profileImage;
   String? fullName;
   String? companyName;
   String? jobTitle;
@@ -13,7 +13,7 @@ class Card {
   String? address;
 
   Card(
-    this.profileImage,
+    // this.profileImage,
     this.fullName,
     this.companyName,
     this.jobTitle,

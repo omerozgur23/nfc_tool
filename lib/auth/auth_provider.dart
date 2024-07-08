@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/screens/language_screen.dart';
-import 'package:nfc_tool/utils/custom_page_route.dart';
+import 'package:nfc_tool/utils/page_route/custom_page_route.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class AuthProvider extends ChangeNotifier {

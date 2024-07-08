@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
 import 'package:nfc_tool/screens/new_password_screen.dart';
-import 'package:nfc_tool/utils/context_extensiton.dart';
-import 'package:nfc_tool/utils/custom_page_route.dart';
+import 'package:nfc_tool/utils/media_query/context_extensiton.dart';
+import 'package:nfc_tool/utils/page_route/custom_page_route.dart';
 
 class EntryPasswordScreen extends StatefulWidget {
   const EntryPasswordScreen({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
-import 'package:nfc_tool/utils/context_extensiton.dart';
+import 'package:nfc_tool/utils/media_query/context_extensiton.dart';
 
 class HowToUseScreen extends StatelessWidget {
   const HowToUseScreen({super.key});
@@ -102,7 +102,7 @@ class HowToUseScreen extends StatelessWidget {
 
   Widget buildListTile(String title) {
     return ListTile(
-      leading: Icon(CupertinoIcons.dot_square_fill),
+      leading: const Icon(CupertinoIcons.dot_square_fill),
       title: Text(title),
     );
   }
