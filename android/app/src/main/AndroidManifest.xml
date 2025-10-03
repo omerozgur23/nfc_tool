@@ -11,7 +11,7 @@
     <application
         android:label="Express Tap"
         android:name="${applicationName}"
-        android:icon="@mipmap/app_logo">
+        android:icon="@drawable/app_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"

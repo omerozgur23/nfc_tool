@@ -82,6 +82,23 @@
     },
     "howToUseScreen": {
         "title": "How To Use",
-        "listText": "Lorem ipsum dolor sit amet, consectetur"
+        "newText1": "Fill in your information in the required fields",
+        "newText2": "Tap the Save button",
+        "newText3": "Hold your phone close to your Express Tap card",
+        "newText4": "Your information will be successfully saved to the card",
+        "editText1": "Tap the Edit button for the card you want to update",
+        "editText2": "Hold your phone close to your Express Tap card",
+        "editText3": "On the screen that opens, delete or change the desired information",
+        "editText4": "Tap the Save button",
+        "editText5": "Hold your card again; the updated information will be saved",
+        "deleteText1": "Tap the Delete button",
+        "deleteText2": "Hold your Express Tap card close to your phone",
+        "deleteText3": "All information on the card will be permanently deleted",
+        "databaseText1": "In this menu, you can view all employees in your company who have been issued an Express Tap card",
+        "databaseText2": "You can also see the date each card was created/issued",
+        "wifiText1": "Enter your Wi-Fi information",
+        "wifiText2": "Tap the Save button",
+        "wifiText3": "Hold your phone close to any Express Tap card",
+        "wifiText4": "Later, other devices can simply scan this card to automatically connect to the Wi-Fi network"
     }
 }

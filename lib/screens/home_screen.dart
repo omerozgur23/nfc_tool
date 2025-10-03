@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:flutter_nfc_kit/flutter_nfc_kit.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:nfc_tool/constants/color.dart';
@@ -32,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final NfcErase nfcErase = NfcErase();
   final NFCReader nfcReader = NFCReader();
+
+  final MobileScannerController cameraController = MobileScannerController();
 
   String _scanBarcode = 'Unknown';
 
@@ -165,24 +170,58 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.of(context).pushNamed("/changePassword");
   }
 
-  Future<void> scanQR() async {
-    String barcodeScanRes;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-          '#ff6666', 'Cancel', true, ScanMode.QR);
-      print(barcodeScanRes);
-    } on PlatformException {
-      barcodeScanRes = 'Failed to get platform version.';
-    }
+  // Future<void> scanQR() async {
+  //   String barcodeScanRes;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+  //         '#ff6666', 'Cancel', true, ScanMode.QR);
+  //     print(barcodeScanRes);
+  //   } on PlatformException {
+  //     barcodeScanRes = 'Failed to get platform version.';
+  //   }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
+
+  //   setState(() {
+  //     _scanBarcode = barcodeScanRes;
+  //   });
+  // }
+
+  Future<void> scanQR() async {
+    String? barcodeScanRes;
+
+    final completer = Completer<String?>();
+
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => Scaffold(
+              appBar: AppBar(
+                title: const Text("Scan the QR code"),
+              ),
+              body: MobileScanner(
+                controller: cameraController,
+                onDetect: (capture) {
+                  final List<Barcode> barcodes = capture.barcodes;
+                  if (barcodes.isNotEmpty) {
+                    barcodeScanRes = barcodes.first.rawValue;
+                    completer.complete(barcodeScanRes);
+
+                    Navigator.of(context).pop();
+                  }
+                },
+              ),
+            )));
+
+    // Burada sonuç dönmüş olacak
+    barcodeScanRes = await completer.future;
+
     if (!mounted) return;
 
     setState(() {
-      _scanBarcode = barcodeScanRes;
+      _scanBarcode = barcodeScanRes ?? 'Okunamadı';
     });
   }
 }
